@@ -1,0 +1,43 @@
+package routeros
+
+// Script generated from sampled device ${sampleid}
+
+import (
+	"context"
+
+	"github.com/hashicorp/terraform-plugin-sdk/v2/diag"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
+)
+
+func Datasource${Gostructname}s() *schema.Resource {
+	return &schema.Resource{
+		ReadContext: datasource${Gostructname}sRead,
+		Schema: map[string]*schema.Schema{
+			MetaResourcePath: PropResourcePath("/${cmd}"),
+			MetaId:           PropId(Id),
+
+			KeyFilter: PropFilterRw,
+			"${gostructname}s": {
+				Type:     schema.TypeList,
+				Computed: true,
+				Elem: &schema.Resource{
+					Schema: map[string]*schema.Schema{
+${schema}
+					},
+				},
+			},
+		},
+	}
+}
+
+func datasource${Gostructname}sRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	s := Datasource${Gostructname}s().Schema
+	path := s[MetaResourcePath].Default.(string)
+
+	res, err := ReadItemsFiltered(buildReadFilter(d.Get(KeyFilter).(map[string]interface{})), path, m.(Client))
+	if err != nil {
+		return diag.FromErr(err)
+	}
+
+	return MikrotikResourceDataToTerraformDatasource(res, "${gostructname}s", s, d)
+}
