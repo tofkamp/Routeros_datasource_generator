@@ -1,0 +1,41 @@
+package routeros
+
+// Script generated with sample from device ${sampleid}
+
+import (
+        "testing"
+
+        "github.com/hashicorp/terraform-plugin-testing/helper/resource"
+)
+
+const testDatasource${GoStructName} = "data.routeros_${go_struct_name}.xxxx"
+
+func TestAccDatasource${GoStructName}Test_basic(t *testing.T) {
+        for _, name := range testNames {
+                t.Run(name, func(t *testing.T) {
+                        resource.Test(t, resource.TestCase{
+                                PreCheck: func() {
+                                        testAccPreCheck(t)
+                                        testSetTransportEnv(t, name)
+                                },
+                                ProviderFactories: testAccProviderFactories,
+                                Steps: []resource.TestStep{
+                                        {
+                                                Config: testAccDatasource${GoStructName}Config(),
+                                                Check: resource.ComposeTestCheckFunc(
+                                                        testResourcePrimaryInstanceId(testDatasourceIpRoutes),
+                                                ),
+                                        },
+                                },
+                        })
+
+                })
+        }
+}
+
+func testAccDatasource${GoStructName}Config() string {
+        return providerConfig + `
+
+data "routeros_${go_struct_name}" "xxxx" {}
+`
+}

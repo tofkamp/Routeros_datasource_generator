@@ -17,7 +17,7 @@ func DatasourceCertificates() *schema.Resource {
 			MetaId:           PropId(Id),
 
 			KeyFilter: PropFilterRw,
-			"certificates": {
+			"Certificates": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
@@ -50,7 +50,7 @@ func DatasourceCertificates() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"expires_after": { // Sample = expires-after: "2w2d3h56m35s"
+						"expires_after": { // Sample = expires-after: "2w22h30m11s"
 							Type:     schema.TypeString,
 							Computed: true,
 						},
@@ -66,7 +66,7 @@ func DatasourceCertificates() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"issuer": { // Sample = issuer: "C=NL,S=Friesland,L=Leeuwarden,CN=My Personal Root CA"
+						"issuer": { // Sample = issuer: "C=NL,S=Friesland,L=Burgum,CN=Tjibbes Personal Root CA"
 							Type:     schema.TypeString,
 							Computed: true,
 						},
@@ -139,5 +139,5 @@ func datasourceCertificatesRead(ctx context.Context, d *schema.ResourceData, m i
 		return diag.FromErr(err)
 	}
 
-	return MikrotikResourceDataToTerraformDatasource(res, "certificates", s, d)
+	return MikrotikResourceDataToTerraformDatasource(res, "Certificates", s, d)
 }

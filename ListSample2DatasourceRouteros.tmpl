@@ -9,15 +9,15 @@ import (
 	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
-func Datasource${Gostructname}s() *schema.Resource {
+func Datasource${GoStructName}() *schema.Resource {
 	return &schema.Resource{
-		ReadContext: datasource${Gostructname}sRead,
+		ReadContext: datasource${GoStructName}Read,
 		Schema: map[string]*schema.Schema{
 			MetaResourcePath: PropResourcePath("/${cmd}"),
 			MetaId:           PropId(Id),
 
 			KeyFilter: PropFilterRw,
-			"${gostructname}s": {
+			"${GoStructName}": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
@@ -30,8 +30,8 @@ ${schema}
 	}
 }
 
-func datasource${Gostructname}sRead(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
-	s := Datasource${Gostructname}s().Schema
+func datasource${GoStructName}Read(ctx context.Context, d *schema.ResourceData, m interface{}) diag.Diagnostics {
+	s := Datasource${GoStructName}().Schema
 	path := s[MetaResourcePath].Default.(string)
 
 	res, err := ReadItemsFiltered(buildReadFilter(d.Get(KeyFilter).(map[string]interface{})), path, m.(Client))
@@ -39,5 +39,5 @@ func datasource${Gostructname}sRead(ctx context.Context, d *schema.ResourceData,
 		return diag.FromErr(err)
 	}
 
-	return MikrotikResourceDataToTerraformDatasource(res, "${gostructname}s", s, d)
+	return MikrotikResourceDataToTerraformDatasource(res, "${GoStructName}", s, d)
 }

@@ -17,7 +17,7 @@ func DatasourceIpArps() *schema.Resource {
 			MetaId:           PropId(Id),
 
 			KeyFilter: PropFilterRw,
-			"iparps": {
+			"IpArps": {
 				Type:     schema.TypeList,
 				Computed: true,
 				Elem: &schema.Resource{
@@ -79,5 +79,5 @@ func datasourceIpArpsRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	return MikrotikResourceDataToTerraformDatasource(res, "iparps", s, d)
+	return MikrotikResourceDataToTerraformDatasource(res, "IpArps", s, d)
 }

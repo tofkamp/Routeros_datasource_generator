@@ -1,6 +1,10 @@
 import requests
 import json
 
+import os
+cwd = os.getcwd()
+print("cwd =",cwd)
+
 from string import Template
 
 def GetSampleFromRouteros(cmd):
@@ -54,48 +58,60 @@ def GetGoTypedefStruct(key,value,nrtabs):
         goschema += '{tabs}}},\n'.format(tabs = nrtabs*'\t')
         return goschema
 
-def GenerateGODatasourceCode(cmd, sample_id):
-
+def GenerateGODatasourceCode(cmd, sampleid):
+    print("Working on",cmd)
     cmd_split = cmd.split('/')
-    GoStructName = ''.join(i.capitalize() for i in cmd_split)
-    gostructname = GoStructName.lower()
-
+    mapping = {"cmd" : cmd, "sampleid" : sampleid}
+    
     response = GetSampleFromRouteros(cmd)
 
     if response:
-        
-        if response.__class__ == list:
-            gofilename = "datasource_" + cmd.replace('/','_') + "s.go"
+        if response.__class__ == list:     # the sample return a list of objects, add 's' because of plural
+            mapping["GoStructName"] = ''.join(i.capitalize() for i in cmd_split) + 's'
+            mapping["gostructname"] = mapping["GoStructName"].lower()
+            mapping["go_struct_name"] = "_".join(cmd_split) + 's'
             templatefile = "ListSample2DatasourceRouteros.tmpl"
-            provider_go_line = '\t\t\t"routeros_' + cmd.replace('/','_') + 's":      Datasource' + GoStructName + 's(),'
             nrtabs = 6
-            sample = response[0]    # the first item is used to typedef
-    #        print("ini_list1 is a list")
+            sample = response[0]    # the first item is used to typedef the gostruct
         else:
-            gofilename = "datasource_" + cmd.replace('/','_') + ".go"
+            # singular, the sample conatins just one object with attributes
+            mapping["GoStructName"] = ''.join(i.capitalize() for i in cmd_split)
+            mapping["gostructname"] = mapping["GoStructName"].lower()
+            mapping["go_struct_name"] = "_".join(cmd_split)
             templatefile = "Sample2DatasourceRouteros.tmpl"
-            provider_go_line = '\t\t\t"routeros_' + cmd.replace('/','_') + '":      Datasource' + GoStructName + '(),'
             nrtabs = 5
             sample = response
-    #        print("ini_list1 is not a list")
 
-        fp = open("c:/tmp/" + templatefile,"r")
+        gofilename = "datasource_" + mapping["go_struct_name"]
+        provider_go_line = '\t\t\t"routeros_' + mapping["go_struct_name"] + ':      Datasource' + mapping["GoStructName"] + '(),'
+            
+        fp = open(templatefile,"r")
         datasource_template = Template(fp.read())
         fp.close()
 
-        schema = ""
+        mapping["schema"] = ""
         for item in sample.keys():
-            schema += GetGoTypedefStruct(item, sample[item], nrtabs)
+            mapping["schema"] += GetGoTypedefStruct(item, sample[item], nrtabs)
             
-        fp = open("c:/tmp/" + gofilename,"w+")
-        fp.write(datasource_template.substitute(schema = schema,cmd = cmd, gostructname = gostructname,Gostructname = GoStructName, sampleid = sample_id))
+        fp = open("c:/tmp/" + gofilename + '.go',"w+")
+        print(mapping)
+        fp.write(datasource_template.substitute(mapping))
+        fp.close()
+
+        fp = open("Test" + templatefile,"r")
+        datasource_test_template = Template(fp.read())
+        fp.close()
+            
+        fp = open("c:/tmp/" + gofilename + '-test.go',"w+")
+        fp.write(datasource_test_template.substitute(mapping))
         fp.close()
 
         print("Add this line in provider.go:",provider_go_line)
 
 sampleddevice = GetSampleFromRouteros("system/resource")
-sample_id = "{platform} {version} on {board-name} {cpu}-{architecture-name}".format(**sampleddevice)
+sampleid = "{platform} {version} on {board-name} {cpu}-{architecture-name}".format(**sampleddevice)
 
-GenerateGODatasourceCode("ip/arp",sample_id)
-GenerateGODatasourceCode("system/resource",sample_id)
-GenerateGODatasourceCode("certificate",sample_id)
+GenerateGODatasourceCode("ip/arp",sampleid)
+GenerateGODatasourceCode("certificate",sampleid)
+
+#GenerateGODatasourceCode("system/resource",sampleid)
