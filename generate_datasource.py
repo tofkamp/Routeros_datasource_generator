@@ -58,8 +58,8 @@ def GetGoTypedefStruct(key,value,nrtabs):
         goschema += '{tabs}}},\n'.format(tabs = nrtabs*'\t')
         return goschema
 
-def GenerateGODatasourceCode(cmd, sampleid):
-    print("Working on",cmd)
+def GenerateGODatasourceCode(cmd, sampleid,fp_provider_go):
+    print("Working on/" + cmd)
     cmd_split = cmd.split('/')
     mapping = {"cmd" : cmd, "sampleid" : sampleid}
     
@@ -72,7 +72,7 @@ def GenerateGODatasourceCode(cmd, sampleid):
             mapping["go_struct_name"] = "_".join(cmd_split) + 's'
             templatefile = "ListSample2DatasourceRouteros.tmpl"
             nrtabs = 6
-            sample = response[0]    # the first item is used to typedef the gostruct
+            sample = response[0]    # the first item in the list is used to typedef the gostruct
         else:
             # singular, the sample conatins just one object with attributes
             mapping["GoStructName"] = ''.join(i.capitalize() for i in cmd_split)
@@ -93,8 +93,7 @@ def GenerateGODatasourceCode(cmd, sampleid):
         for item in sample.keys():
             mapping["schema"] += GetGoTypedefStruct(item, sample[item], nrtabs)
             
-        fp = open("c:/tmp/" + gofilename + '.go',"w+")
-        print(mapping)
+        fp = open("c:/tmp/" + gofilename + '.go',"w+")    
         fp.write(datasource_template.substitute(mapping))
         fp.close()
 
@@ -102,16 +101,17 @@ def GenerateGODatasourceCode(cmd, sampleid):
         datasource_test_template = Template(fp.read())
         fp.close()
             
-        fp = open("c:/tmp/" + gofilename + '-test.go',"w+")
+        fp = open("c:/tmp/" + gofilename + '_test.go',"w+")
         fp.write(datasource_test_template.substitute(mapping))
         fp.close()
-
-        print("Add this line in provider.go:",provider_go_line)
+        # add the following line to provider.go
+        fp_provider_go.write(provider_go_line)
 
 sampleddevice = GetSampleFromRouteros("system/resource")
 sampleid = "{platform} {version} on {board-name} {cpu}-{architecture-name}".format(**sampleddevice)
 
-GenerateGODatasourceCode("ip/arp",sampleid)
-GenerateGODatasourceCode("certificate",sampleid)
-
+fp_provider_go = open("lines_to_include_in_provider.go","w+")
+GenerateGODatasourceCode("ip/arp",sampleid,fp_provider_go)
+GenerateGODatasourceCode("certificate",sampleid,fp_provider_go)
+fp_provider_go.close()
 #GenerateGODatasourceCode("system/resource",sampleid)

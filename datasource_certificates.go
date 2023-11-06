@@ -50,7 +50,7 @@ func DatasourceCertificates() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"expires_after": { // Sample = expires-after: "2w22h30m11s"
+						"expires_after": { // Sample = expires-after: "1w6d23h19m57s"
 							Type:     schema.TypeString,
 							Computed: true,
 						},

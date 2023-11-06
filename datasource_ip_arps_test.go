@@ -1,6 +1,6 @@
 package routeros
 
-// Script generated with sample from device ${sampleid}
+// Script generated with sample from device MikroTik 7.11.2 (stable) on CHR AMD-x86_64
 
 import (
         "testing"
@@ -8,9 +8,9 @@ import (
         "github.com/hashicorp/terraform-plugin-testing/helper/resource"
 )
 
-const testDatasource${GoStructName} = "data.routeros_${go_struct_name}.data"
+const testDatasourceIpArps = "data.routeros_ip_arps.data"
 
-func TestAccDatasource${GoStructName}Test_basic(t *testing.T) {
+func TestAccDatasourceIpArpsTest_basic(t *testing.T) {
         for _, name := range testNames {
                 t.Run(name, func(t *testing.T) {
                         resource.Test(t, resource.TestCase{
@@ -21,7 +21,7 @@ func TestAccDatasource${GoStructName}Test_basic(t *testing.T) {
                                 ProviderFactories: testAccProviderFactories,
                                 Steps: []resource.TestStep{
                                         {
-                                                Config: testAccDatasource${GoStructName}Config(),
+                                                Config: testAccDatasourceIpArpsConfig(),
                                                 Check: resource.ComposeTestCheckFunc(
                                                         testResourcePrimaryInstanceId(testDatasourceIpRoutes),
                                                 ),
@@ -33,9 +33,9 @@ func TestAccDatasource${GoStructName}Test_basic(t *testing.T) {
         }
 }
 
-func testAccDatasource${GoStructName}Config() string {
+func testAccDatasourceIpArpsConfig() string {
         return providerConfig + `
 
-data "routeros_${go_struct_name}" "data" {}
+data "routeros_ip_arps" "data" {}
 `
 }
