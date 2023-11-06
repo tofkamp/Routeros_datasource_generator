@@ -79,5 +79,5 @@ func datasourceIpArpsRead(ctx context.Context, d *schema.ResourceData, m interfa
 		return diag.FromErr(err)
 	}
 
-	return MikrotikResourceDataToTerraformDatasource(res, "IpArps", s, d)
+	return MikrotikResourceDataToTerraformDatasource(res, "data", s, d)
 }

@@ -83,22 +83,24 @@ def GenerateGODatasourceCode(cmd, sampleid,fp_provider_go):
             sample = response
 
         gofilename = "datasource_" + mapping["go_struct_name"]
-        provider_go_line = '\t\t\t"routeros_' + mapping["go_struct_name"] + ':      Datasource' + mapping["GoStructName"] + '(),'
-            
-        fp = open(templatefile,"r")
-        datasource_template = Template(fp.read())
-        fp.close()
+        provider_go_line = '\t\t\t"routeros_{:<14} Datasource{}(),\n'.format(mapping["go_struct_name"] + '":', mapping["GoStructName"])
 
         mapping["schema"] = ""
         for item in sample.keys():
             mapping["schema"] += GetGoTypedefStruct(item, sample[item], nrtabs)
-            
-        fp = open("c:/tmp/" + gofilename + '.go',"w+")    
-        fp.write(datasource_template.substitute(mapping))
+
+        # read templates
+        fp = open(templatefile,"r")
+        datasource_template = Template(fp.read())
         fp.close()
 
         fp = open("Test" + templatefile,"r")
         datasource_test_template = Template(fp.read())
+        fp.close()
+
+        # write generated go file
+        fp = open("c:/tmp/" + gofilename + '.go',"w+")    
+        fp.write(datasource_template.substitute(mapping))
         fp.close()
             
         fp = open("c:/tmp/" + gofilename + '_test.go',"w+")

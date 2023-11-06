@@ -39,5 +39,5 @@ func datasource${GoStructName}Read(ctx context.Context, d *schema.ResourceData, 
 		return diag.FromErr(err)
 	}
 
-	return MikrotikResourceDataToTerraformDatasource(res, "${GoStructName}", s, d)
+	return MikrotikResourceDataToTerraformDatasource(res, "data", s, d)
 }

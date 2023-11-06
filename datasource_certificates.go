@@ -50,7 +50,7 @@ func DatasourceCertificates() *schema.Resource {
 							Type:     schema.TypeString,
 							Computed: true,
 						},
-						"expires_after": { // Sample = expires-after: "1w6d23h19m57s"
+						"expires_after": { // Sample = expires-after: "1w6d22h54m7s"
 							Type:     schema.TypeString,
 							Computed: true,
 						},
@@ -139,5 +139,5 @@ func datasourceCertificatesRead(ctx context.Context, d *schema.ResourceData, m i
 		return diag.FromErr(err)
 	}
 
-	return MikrotikResourceDataToTerraformDatasource(res, "Certificates", s, d)
+	return MikrotikResourceDataToTerraformDatasource(res, "data", s, d)
 }
