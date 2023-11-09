@@ -1,0 +1,54 @@
+[
+    {
+        ".id": "*1",
+        "category": "Host bridge",
+        "device": "00:00.0",
+        "device-id": "0x7192",
+        "irq": "0",
+        "name": "440BX/ZX/DX - 82443BX/ZX/DX Host bridge (AGP disabled) (rev: 3)",
+        "vendor": "Intel Corporation",
+        "vendor-id": "0x8086"
+    },
+    {
+        ".id": "*2",
+        "category": "ISA bridge",
+        "device": "00:07.0",
+        "device-id": "0x7110",
+        "irq": "0",
+        "name": "82371AB/EB/MB PIIX4 ISA (rev: 1)",
+        "vendor": "Intel Corporation",
+        "vendor-id": "0x8086"
+    },
+    {
+        ".id": "*3",
+        "category": "IDE interface",
+        "device": "00:07.1",
+        "device-id": "0x7111",
+        "io": "0xFFA0-0xFFAF",
+        "irq": "0",
+        "name": "82371AB/EB/MB PIIX4 IDE (rev: 1)",
+        "vendor": "Intel Corporation",
+        "vendor-id": "0x8086"
+    },
+    {
+        ".id": "*4",
+        "category": "Bridge",
+        "device": "00:07.3",
+        "device-id": "0x7113",
+        "irq": "0",
+        "name": "82371AB/EB/MB PIIX4 ACPI (rev: 2)",
+        "vendor": "Intel Corporation",
+        "vendor-id": "0x8086"
+    },
+    {
+        ".id": "*5",
+        "category": "VGA compatible controller",
+        "device": "00:08.0",
+        "device-id": "0x5353",
+        "irq": "11",
+        "memory": "0xF8000000-0xFFFBFFFF",
+        "name": "Hyper-V virtual VGA (rev: 0)",
+        "vendor": "Microsoft Corporation",
+        "vendor-id": "0x1414"
+    }
+]

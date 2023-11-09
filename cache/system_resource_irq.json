@@ -1,0 +1,62 @@
+[
+    {
+        ".id": "*1",
+        "active-cpu": "0",
+        "count": "9",
+        "cpu": "auto",
+        "irq": "1",
+        "per-cpu-count": "9",
+        "read-only": "false",
+        "users": "i8042"
+    },
+    {
+        ".id": "*4",
+        "active-cpu": "0",
+        "count": "10",
+        "cpu": "auto",
+        "irq": "4",
+        "per-cpu-count": "10",
+        "read-only": "false",
+        "users": "ttyS0"
+    },
+    {
+        ".id": "*9",
+        "active-cpu": "0",
+        "count": "0",
+        "cpu": "auto",
+        "irq": "9",
+        "per-cpu-count": "0",
+        "read-only": "false",
+        "users": "acpi"
+    },
+    {
+        ".id": "*C",
+        "active-cpu": "0",
+        "count": "3",
+        "cpu": "auto",
+        "irq": "12",
+        "per-cpu-count": "3",
+        "read-only": "false",
+        "users": "i8042"
+    },
+    {
+        ".id": "*E",
+        "active-cpu": "0",
+        "count": "0",
+        "cpu": "auto",
+        "irq": "14",
+        "per-cpu-count": "0",
+        "read-only": "false",
+        "users": "ata_piix"
+    },
+    {
+        ".id": "*F",
+        "active-cpu": "0",
+        "count": "31",
+        "cpu": "auto",
+        "irq": "15",
+        "per-cpu-count": "31",
+        "read-only": "false",
+        "users": "ata_piix"
+    }
+]

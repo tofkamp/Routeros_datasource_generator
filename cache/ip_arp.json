@@ -1,0 +1,14 @@
+[
+    {
+        ".id": "*1",
+        "DHCP": "false",
+        "address": "192.168.9.10",
+        "complete": "true",
+        "disabled": "false",
+        "dynamic": "true",
+        "interface": "ether1",
+        "invalid": "false",
+        "mac-address": "70:85:C2:37:5A:21",
+        "published": "false"
+    }
+]

@@ -1,13 +1,15 @@
 import requests
 import json
-
-import os
-cwd = os.getcwd()
-print("cwd =",cwd)
+import os.path
 
 from string import Template
 
 def GetSampleFromRouteros(cmd):
+    cachefile = "cache"+ '/' + cmd.replace('/','_') + '.json'
+    if os.path.exists(cachefile):
+        with open(cachefile, 'r', encoding='utf8') as f:
+            response = json.load(f)
+        return response
     url = "https://192.168.9.8/rest/" + cmd
 
     headers = {
@@ -19,6 +21,8 @@ def GetSampleFromRouteros(cmd):
         response = requests.get( url,auth= ('admin', 'admin'),timeout=5, verify=False)
         
         response.raise_for_status()
+        with open(cachefile, 'w', encoding='utf8') as f:
+            json.dump(response.json(),f, ensure_ascii=False, sort_keys = True, indent = 4)
         return response.json()
         
     except requests.exceptions.HTTPError as errh:
@@ -58,7 +62,7 @@ def GetGoTypedefStruct(key,value,nrtabs):
         goschema += '{tabs}}},\n'.format(tabs = nrtabs*'\t')
         return goschema
 
-def GenerateGODatasourceCode(cmd, sampleid,fp_provider_go):
+def GenerateGODatasourceCode(cmd, sampleid,fp_provider_go,generate_test_file = True):
     print("Working on/" + cmd)
     cmd_split = cmd.split('/')
     mapping = {"cmd" : cmd, "sampleid" : sampleid}
@@ -79,7 +83,7 @@ def GenerateGODatasourceCode(cmd, sampleid,fp_provider_go):
             mapping["gostructname"] = mapping["GoStructName"].lower()
             mapping["go_struct_name"] = "_".join(cmd_split)
             templatefile = "Sample2DatasourceRouteros.tmpl"
-            nrtabs = 5
+            nrtabs = 2
             sample = response
 
         gofilename = "datasource_" + mapping["go_struct_name"]
@@ -94,18 +98,20 @@ def GenerateGODatasourceCode(cmd, sampleid,fp_provider_go):
         datasource_template = Template(fp.read())
         fp.close()
 
-        fp = open("Test" + templatefile,"r")
-        datasource_test_template = Template(fp.read())
-        fp.close()
-
         # write generated go file
         fp = open("c:/tmp/" + gofilename + '.go',"w+")    
         fp.write(datasource_template.substitute(mapping))
         fp.close()
-            
-        fp = open("c:/tmp/" + gofilename + '_test.go',"w+")
-        fp.write(datasource_test_template.substitute(mapping))
-        fp.close()
+
+        if generate_test_file:
+            fp = open("Test" + templatefile,"r")
+            datasource_test_template = Template(fp.read())
+            fp.close()
+
+
+            fp = open("c:/tmp/" + gofilename + '_test.go',"w+")
+            fp.write(datasource_test_template.substitute(mapping))
+            fp.close()
         # add the following line to provider.go
         fp_provider_go.write(provider_go_line)
 
@@ -115,5 +121,13 @@ sampleid = "{platform} {version} on {board-name} {cpu}-{architecture-name}".form
 fp_provider_go = open("lines_to_include_in_provider.go","w+")
 GenerateGODatasourceCode("ip/arp",sampleid,fp_provider_go)
 GenerateGODatasourceCode("certificate",sampleid,fp_provider_go)
+GenerateGODatasourceCode("system/resource",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/resource/cpu",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/resource/irq",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/resource/pci",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/resource/usb",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/resource/routerboard",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/resource/routerboard/settings",sampleid,fp_provider_go, generate_test_file = False)
 fp_provider_go.close()
-#GenerateGODatasourceCode("system/resource",sampleid)
+
+

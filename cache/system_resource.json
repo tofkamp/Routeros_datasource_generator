@@ -1,0 +1,19 @@
+{
+    "architecture-name": "x86_64",
+    "board-name": "CHR",
+    "build-time": "Aug/31/2023 13:55:47",
+    "cpu": "AMD",
+    "cpu-count": "1",
+    "cpu-frequency": "3400",
+    "cpu-load": "0",
+    "factory-software": "7.1",
+    "free-hdd-space": "74317824",
+    "free-memory": "299909120",
+    "platform": "MikroTik",
+    "total-hdd-space": "93564928",
+    "total-memory": "1006632960",
+    "uptime": "22m52s",
+    "version": "7.11.2 (stable)",
+    "write-sect-since-reboot": "632",
+    "write-sect-total": "632"
+}
