@@ -126,8 +126,8 @@ GenerateGODatasourceCode("system/resource/cpu",sampleid,fp_provider_go, generate
 GenerateGODatasourceCode("system/resource/irq",sampleid,fp_provider_go, generate_test_file = False)
 GenerateGODatasourceCode("system/resource/pci",sampleid,fp_provider_go, generate_test_file = False)
 GenerateGODatasourceCode("system/resource/usb",sampleid,fp_provider_go, generate_test_file = False)
-GenerateGODatasourceCode("system/resource/routerboard",sampleid,fp_provider_go, generate_test_file = False)
-GenerateGODatasourceCode("system/resource/routerboard/settings",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/routerboard",sampleid,fp_provider_go, generate_test_file = False)
+GenerateGODatasourceCode("system/routerboard/settings",sampleid,fp_provider_go, generate_test_file = False)
 fp_provider_go.close()
 
 
